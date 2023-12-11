@@ -1,27 +1,25 @@
 var users = [
-  { username: 'usuario1', password: 'contraseña1' },
-  { username: 'usuario2', password: 'contraseña2' },
-  { username: 'usuario3', password: 'contraseña3' }
+  { username: 'ieti', password: 'cordova' }
+  // Puedes añadir más usuarios aquí si es necesario.
 ];
-
-function validarCredenciales(username, password) {
-  for (var i = 0; i < users.length; i++) {
-    if (users[i].username === username && users[i].password === password) {
-      return true;
-    }
-  }
-  return false;
-}
 
 document.getElementById('loginButton').addEventListener('click', function() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
 
-  if (validarCredenciales(username, password)) {
-    alert('¡Inicio de sesión exitoso!');
-    // Aquí podrías redirigir al usuario a otra página, mostrar otro contenido, etc.
+  if (username === '' || password === '') {
+      alert('Por favor, complete todos los campos.');
+      return;
+  }
+
+  var user = users.find(function(user) {
+      return user.username === username && user.password === password;
+  });
+
+  if (user) {
+      alert('¡Inicio de sesión exitoso!');
   } else {
-    alert('Usuario o contraseña incorrectos. Por favor, intenta de nuevo.');
+      alert('Usuario o contraseña incorrectos.');
   }
 });
 
@@ -30,21 +28,25 @@ document.getElementById('registerButton').addEventListener('click', function() {
   var newPassword = document.getElementById('newPassword').value;
   var confirmPassword = document.getElementById('confirmPassword').value;
 
-  // Verificar si el usuario ya existe
-  for (var i = 0; i < users.length; i++) {
-    if (users[i].username === newUsername) {
+  if (newUsername === '' || newPassword === '' || confirmPassword === '') {
+      alert('Por favor, complete todos los campos.');
+      return;
+  }
+
+  if (newPassword !== confirmPassword) {
+      alert('Las contraseñas no coinciden.');
+      return;
+  }
+
+  var existingUser = users.find(function(user) {
+      return user.username === newUsername;
+  });
+
+  if (existingUser) {
       alert('El usuario ya existe. Por favor, elige otro nombre de usuario.');
       return;
-    }
   }
 
-  // Verificar si las contraseñas coinciden
-  if (newPassword !== confirmPassword) {
-    alert('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
-    return;
-  }
-
-  // Agregar nuevo usuario
   users.push({ username: newUsername, password: newPassword });
   alert('¡Registro exitoso! Ahora puedes iniciar sesión con tus nuevos datos.');
 });
